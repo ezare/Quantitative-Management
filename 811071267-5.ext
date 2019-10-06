@@ -1,0 +1,33 @@
+my.lp <- make.lp(9, 9)
+
+# objective function 
+set.objfn(my.lp, c(420, 360, 300, 420, 360, 300, 420, 360, 300))
+lp.control(my.lp, sense='max')
+
+# capacity
+set.column(my.lp, 1, c(1, 1, 1, 0, 0, 0, 0, 0, 0))
+set.column(my.lp, 2, c(0, 0, 0, 1, 1, 1, 0, 0, 0))
+set.column(my.lp, 3, c(0, 0, 0, 0, 0, 0, 1, 1, 1))
+
+# square footage
+set.column(my.lp, 1, c(20, 15, 12, 0, 0, 0, 0, 0, 0))
+set.column(my.lp, 2, c(0, 0, 0, 20, 15, 12, 0, 0, 0))
+set.column(my.lp, 3, c(0, 0, 0, 0, 0, 0, 20, 15, 12))
+
+# sales
+set.column(my.lp, 1, c(1, 1, 1, 0, 0, 0, 0, 0, 0))
+set.column(my.lp, 2, c(0, 0, 0, 1, 1, 1, 0, 0, 0))
+set.column(my.lp, 3, c(0, 0, 0, 0, 0, 0, 1, 1, 1))
+
+
+set.constr.type(my.lp, rep("<=", 9))
+set.rhs(my.lp, c(750, 900, 450, 13000, 12000, 5000, 900, 1200, 750))
+
+my.lp
+
+solve(my.lp)
+get.objective(my.lp)
+get.variables(my.lp)
+get.constraints(my.lp)
+get.sensitivity.rhs(my.lp)
+get.sensitivity.obj(my.lp)
