@@ -1,0 +1,31 @@
+/* Objective function */
+  min: 622 xA1 + 614 xA2 + 630 xA3 + 641 xB1 + 645 xB2 + 649 xB3;
+
+/*Constraints */
+  xA1 + xA2 + xA3 <= 100;
+  xB1 + xB2 + xB3 <= 125;
+  xA1 + xB1       >= 80;
+  xA2 + xA2       >= 60;
+  xA3 + xA3       >= 70;
+  
+  
+  
+# make an lp object with 0 constraints and 6 decision variables
+lprec <- make.lp(0, 6)
+
+# Now create the objective function. The default is a minimization problem. 
+set.objfn(lprec, c(622, 614, 630, 641, 645, 649))
+
+# Add the five constraints
+add.constraint(lprec, c(1, 1, 1, 0, 0, 0), "<=", 100)
+add.constraint(lprec, c(0, 0, 0, 1, 1, 1), "<=", 120)
+add.constraint(lprec, c(1, 0, 0, 1, 0, 0), ">=", 80)
+add.constraint(lprec, c(0, 1, 0, 0, 1, 0), ">=", 60)
+add.constraint(lprec, c(0, 0, 1, 0, 0, 1), ">=", 70)
+lprec
+solve(lprec)
+get.objective(lprec)
+get.variables(lprec)
+get.constraints(lprec)
+get.sensitivity.objex(lprec)
+get.sensitivity.rhs(lprec)
