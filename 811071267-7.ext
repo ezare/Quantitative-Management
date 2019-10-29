@@ -1,0 +1,141 @@
+library(lpSolveAPI)
+
+z <- make.lp(6, 4)
+
+## Facility 1:
+
+# objective function 
+
+set.objfn(z, c(150,0.2,0,0))
+lp.control(z, sense='max')
+
+# Subject to
+
+set.column(z, 1, c(150, 400, 320, 520, 350, 320))
+set.column(z, 2, c(0.2, 0.7, 1.2, 2, 1.2, 0.7))
+set.column(z, 3, c(-14000, -14000, -42000, -28000, -19000, -14000))
+set.column(z, 4, c(-3500, -21000, -10500, -42000, -25000, -15000))
+
+set.rhs(z, c(0, 0, 0, 0, 0, 0))
+set.constr.type(z, rep("<=",6))
+
+z
+
+solve(z)
+get.objective(z)
+get.variables(z)
+
+
+## Facility 2:
+
+# objective function 
+
+set.objfn(z, c(400,0.7,0,0))
+lp.control(z, sense='max')
+
+# Subject to
+
+set.column(z, 1, c(150, 400, 320, 520, 350, 320))
+set.column(z, 2, c(0.2, 0.7, 1.2, 2, 1.2, 0.7))
+set.column(z, 3, c(-14000, -14000, -42000, -28000, -19000, -14000))
+set.column(z, 4, c(-3500, -21000, -10500, -42000, -25000, -15000))
+
+set.rhs(z, c(0, 0, 0, 0, 0, 0))
+set.constr.type(z, rep("<=",6))
+
+z
+
+# Facility 3:
+
+# objective function 
+
+set.objfn(z, c(320,1.2,0,0))
+lp.control(z, sense='max')
+
+# Subject to
+
+set.column(z, 1, c(150, 400, 320, 520, 350, 320))
+set.column(z, 2, c(0.2, 0.7, 1.2, 2, 1.2, 0.7))
+set.column(z, 3, c(-14000, -14000, -42000, -28000, -19000, -14000))
+set.column(z, 4, c(-3500, -21000, -10500, -42000, -25000, -15000))
+
+set.rhs(z, c(0, 0, 0, 0, 0, 0))
+set.constr.type(z, rep("<=",6))
+
+z
+
+# Facility 4:
+
+# objective function 
+
+set.objfn(z, c(520,2,0,0))
+lp.control(z, sense='max')
+
+# Subject to
+
+set.column(z, 1, c(150, 400, 320, 520, 350, 320))
+set.column(z, 2, c(0.2, 0.7, 1.2, 2, 1.2, 0.7))
+set.column(z, 3, c(-14000, -14000, -42000, -28000, -19000, -14000))
+set.column(z, 4, c(-3500, -21000, -10500, -42000, -25000, -15000))
+
+set.rhs(z, c(0, 0, 0, 0, 0, 0))
+set.constr.type(z, rep("<=",6))
+
+z
+
+# Facility 5:
+
+# objective function 
+
+set.objfn(z, c(350,1.2,0,0))
+lp.control(z, sense='max')
+
+# Subject to
+
+set.column(z, 1, c(150, 400, 320, 520, 350, 320))
+set.column(z, 2, c(0.2, 0.7, 1.2, 2, 1.2, 0.7))
+set.column(z, 3, c(-14000, -14000, -42000, -28000, -19000, -14000))
+set.column(z, 4, c(-3500, -21000, -10500, -42000, -25000, -15000))
+
+set.rhs(z, c(0, 0, 0, 0, 0, 0))
+set.constr.type(z, rep("<=",6))
+
+z
+
+
+# Facility 6:
+
+# objective function 
+
+set.objfn(z, c(320,0.7,0,0))
+lp.control(z, sense='max')
+
+# Subject to
+
+set.column(z, 1, c(150, 400, 320, 520, 350, 320))
+set.column(z, 2, c(0.2, 0.7, 1.2, 2, 1.2, 0.7))
+set.column(z, 3, c(-14000, -14000, -42000, -28000, -19000, -14000))
+set.column(z, 4, c(-3500, -21000, -10500, -42000, -25000, -15000))
+
+set.rhs(z, c(0, 0, 0, 0, 0, 0))
+set.constr.type(z, rep("<=",6))
+
+z
+
+
+
+library(Benchmarking)
+
+x <- matrix(c(150,400,320,520,350,320,0.2,0.7,1.2,2,1.2,0.7),ncol = 2)
+y <- matrix(c(14000,14000,42000,28000,19000,14000,3500,21000,10500,42000,25000,15000),ncol = 2)
+colnames(y) <- c("Reimbursed Patient-Day","Privately Paid Patient-Day")
+colnames(x) <- c("Staff Hours per Day", "Supplier per Day")
+x
+y
+
+e <- dea(x,y,RTS = "crs")            
+e
+
+peers(e)
+
+lambda(e)
