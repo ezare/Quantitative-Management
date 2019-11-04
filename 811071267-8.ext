@@ -1,0 +1,138 @@
+# First Formulation:
+
+# Maximize:
+# Z = P – 6C – 3D
+
+# Subject to:
+
+# 20 X1 + 15 X2 + 25 X3 >= 0   Profit Goal (The goal is to Maximize profit goal,
+#                             I though it should be at least zero)
+# 6 X1 + 4 X2 + 5 X3 = 50      Employment Level
+# 8 X1 + 7 X2 + 5 X3 >= 75     Earning next year
+  
+# Auxiliary Variable:
+# Y1 = 20 X1 + 15 X2 + 25 X3 – 0                                       
+# Y2 = 6 X1 + 4 X2 + 5 X3 – 50
+# Y3 = 8 X1 + 7 X2 + 5 X3 – 75
+  
+# Final Formulation:
+    
+# Maximize:
+#  Z = (y1+) +  (6y2+) + (6y2-) +  (3y3–)
+  
+# 20 X1 + 15 X2 + 25 X3 - (y1+ - y1–) = 0     Profit Goal
+# 6 X1 + 4 X2 + 5 X3 - (y2+ - y2–) = 50       Employment Level
+# 8 X1 + 7 X2 + 5 X3 - (y3+ - y3–) = 75       Earning next year
+  
+# Xj >= 0, yi+ >=0, yi- >=0
+  
+
+z <- make.lp(3, 9)
+
+
+# objective function 
+
+set.objfn(z, c(0, 0, 0, 1, 0, 6, 6, 0, 3))
+lp.control(z, sense='max')
+
+# Subject to
+
+set.column(z, 1, c(20, 6, 8))
+set.column(z, 2, c(15, 4, 7))
+set.column(z, 3, c(25, 5, 5))
+set.column(z, 4, c(-1, 0, 0))
+set.column(z, 5, c(0, 0, 0))
+set.column(z, 6, c(0, -1, 0))
+set.column(z, 7, c(0, 1, 0))
+set.column(z, 8, c(0, 0, 0))
+set.column(z, 9, c(0, 0, 1))
+
+set.rhs(z, c(0, 50, 75))
+set.constr.type(z, rep("=",3))
+
+z
+
+solve(z)
+get.objective(z)
+get.variables(z)
+
+
+
+# Sequential Approach
+
+# Based on penalty, first priority is to maximize the profit.
+# Second priorities are employement and earning.
+
+
+# Maximize:
+#  Z = y1+
+
+# 20 X1 + 15 X2 + 25 X3 - (y1+ - y1–) = 0     Profit Goal, the first priority
+
+# Xj >= 0, yi+ >=0, yi- >=0
+
+o <- make.lp(1, 5)
+
+
+# objective function 
+
+set.objfn(o, c(0, 0, 0, 1, 0))
+lp.control(o, sense='max')
+
+# Subject to
+
+set.column(o, 1, c(20))
+set.column(o, 2, c(15))
+set.column(o, 3, c(25))
+set.column(o, 4, c(1))
+set.column(o, 5, c(0))
+
+set.rhs(o, c(0))
+set.constr.type(o, rep("=",1))
+
+o
+
+solve(o)
+get.objective(o)
+get.variables(o)
+
+
+# Second Stage
+
+# Maximize:
+#  Z = (6y2+) + (6y2-) +  (3y3–)
+
+# 20 X1 + 15 X2 + 25 X3 + y1– = 0             Profit Goal
+# 6 X1 + 4 X2 + 5 X3 - (y2+ - y2–) = 50       Employment Level
+# 8 X1 + 7 X2 + 5 X3 - (y3+ - y3–) = 75       Earning next year
+
+# Xj >= 0, yi+ >=0, yi- >=0
+
+
+p <- make.lp(3, 8)
+
+# objective function 
+
+set.objfn(p, c(0, 0, 0, 0, 6, 6, 0, 3))
+lp.control(p, sense='max')
+
+# Subject to
+
+set.column(p, 1, c(20, 6, 8))
+set.column(p, 2, c(15, 4, 7))
+set.column(p, 3, c(25, 5, 5))
+set.column(p, 4, c(1, 0, 0))
+set.column(p, 5, c(0, -1, 0))
+set.column(p, 6, c(0, 1, 0))
+set.column(p, 7, c(0, 0, -1))
+set.column(p, 8, c(0, 0, 1))
+
+
+set.rhs(p, c(0, 50, 75))
+set.constr.type(p, rep("=",3))
+
+p
+
+solve(p)
+get.objective(p)
+get.variables(p)
