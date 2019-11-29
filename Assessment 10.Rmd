@@ -1,0 +1,92 @@
+
+
+
+```{r}
+
+library(GenSA)
+library(ggplot2)
+library(GA)
+
+```
+
+
+
+```{r}
+
+## GA methode
+# Consider the function f(x)=y=(a+b*x) defined over the range 0≤x≤20, a & b equal to 1:
+
+f <- function(x)  (1+x)
+lbound <- 0; ubound <- 20
+
+curve(f, from = lbound, to = ubound, n = 20)
+
+GA <- ga(type = "real-valued", fitness = f, lower = c(th = lbound), upper = ubound)
+GA
+summary(GA)
+plot(GA)
+
+
+```
+
+
+
+```{r}
+## SA methode
+
+nfun1 <- function(x)  (1+x) # convert to minimization
+ll = c(0)
+ul = c(20)
+par = 2
+out1 <- GenSA(par=par,lower=ll,upper=ul,fn=nfun1)
+out1[c("value","par","counts")]
+
+curve(nfun1, from = 0, to = 20, n = 20)
+points(out1$par[1],-out1$value, col = 2, pch = 19)
+
+
+```
+
+
+
+```{r}
+## GA methode
+# Consider now different function like (x^2+x)*cos(x) defined over the range 0≤x≤20, a & b equal to 1:
+
+f <- function(x)  (x^2+x)*cos(x)
+lbound <- -10; ubound <- 10
+curve(f, from = lbound, to = ubound, n = 20)
+
+GA <- ga(type = "real-valued", fitness = f, lower = c(th = lbound), upper = ubound)
+summary(GA)
+
+
+```
+
+
+
+```{r}
+## SA methode
+
+nfun1 <- function(x)  (x^2+x)*cos(x) 
+ll = c(-10)
+ul = c(10)
+par = 2
+out1 <- GenSA(par=par,lower=ll,upper=ul,fn=nfun1)
+n <- out1[c("value","par","counts")]
+
+curve(nfun1, from = 0, to = 20, n = 20)
+points(out1$par[1],-out1$value, col = 2, pch = 19)
+
+```
+
+
+
+
+
+
+
+
+
+
+
