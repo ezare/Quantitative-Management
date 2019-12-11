@@ -1,0 +1,170 @@
+
+
+The objective is to "maximize the chance of success for each group" on the class project. The variables that I chose for enhancing the chance of success for each group are how the students in each group have done well in Homework, presentation and how much work experience they have.
+
+Objective function:  maximize chance of success = Z
+Decision Variables that lead to success: Homework, Presentation and Work experience
+
+Homework= X1    Work experience= X3    Presentation= X2     
+
+The higher the amount of X1,X2 and X3 are, the more successful a group in the project is. Lets assume all these variable generate equally a unit success of 5:
+
+Z: 5X1 + 5X2 + 5X3
+
+Each student is able to get a score between 1 to 5 for each variable.
+
+
+```{r}
+
+# Group 1: 
+
+# Student 1: 5 X11+ 3 X12+ 4 X13 =< 50 (50 is the total or maximum grade which each                                           student can aquire ffom all variables)
+# Student 2: 4 X21+ 5 X22+ 3 X13 =< 50
+# Student 3: 4 X31+ 4 X32+ 4 X33 =< 50
+
+
+library(lpSolveAPI)
+
+A <- make.lp(3, 3)
+
+# objective function 
+
+set.objfn(A, c(5,5,5))
+lp.control(A, sense='max')
+
+
+# Subject to
+
+set.column(A, 1, c(5,4,4))
+set.column(A, 2, c(3,4,5))
+set.column(A, 3, c(4,3,4))
+
+set.rhs(A, c(50, 50, 50))
+set.constr.type(A, rep("<=",3))
+
+A
+
+solve(A)
+get.objective(A)
+get.variables(A)
+
+
+```
+
+
+
+```{r}
+
+# Group 2: 
+
+# Student 4: 3 X41+ 3 X42+ 4 X43 =< 50
+# Student 5: 3 X51+ 4 X52+ 3 X53 =< 50
+# Student 6: 3 X61+ 3 X62+ 3 X63 =< 50
+
+
+
+B <- make.lp(3, 3)
+
+# objective function 
+
+set.objfn(B, c(5,5,5))
+lp.control(B, sense='max')
+
+
+# Subject to
+
+set.column(B, 1, c(3,3,3))
+set.column(B, 2, c(3,4,3))
+set.column(B, 3, c(4,3,3))
+
+set.rhs(B, c(50, 50, 50))
+set.constr.type(B, rep("<=",3))
+
+B
+
+solve(B)
+get.objective(B)
+get.variables(B)
+
+```
+
+
+
+
+```{r}
+
+# Group 3: 
+
+# St 7: 4 X71+ 3 X72+ 4 X73 =< 50
+# St 8: 4 X71+ 5 X72+ 4 X73 =< 50
+# St 9: 4 X71+ 2 X72+ 3 X73 =< 50
+
+C <- make.lp(3, 3)
+
+# objective function 
+
+set.objfn(C, c(5,5,5))
+lp.control(C, sense='max')
+
+
+# Subject to
+
+set.column(C, 1, c(4,4,4))
+set.column(C, 2, c(3,5,2))
+set.column(C, 3, c(4,4,3))
+
+set.rhs(C, c(50, 50, 50))
+set.constr.type(C, rep("<=",3))
+
+C
+
+solve(C)
+get.objective(C)
+get.variables(C)
+
+
+```
+
+
+
+```{r}
+
+# Group 4: 
+
+# Student 10: 4 X101+ 3 X102+ 5 X103 =< 50
+# Student 11: 4 X111+ 5 X112+ 4 X113 =< 50
+# Student 12: 2 X121+ 3 X122+ 2 X123 =< 50
+
+D <- make.lp(3, 3)
+
+# objective function 
+
+set.objfn(D, c(5,5,5))
+lp.control(D, sense='max')
+
+
+# Subject to
+
+set.column(D, 1, c(4,4,2))
+set.column(D, 2, c(3,5,3))
+set.column(D, 3, c(5,4,2))
+
+set.rhs(D, c(50, 50, 50))
+set.constr.type(D, rep("<=",3))
+
+D
+
+solve(D)
+get.objective(D)
+get.variables(D)
+
+
+```
+
+
+
+
+
+
+
+
